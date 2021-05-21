@@ -1,15 +1,16 @@
-import React from 'react';
-import { Login, Header } from './components'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import {history} from './helper/history'
+import { BrowserRouter as Router } from "react-router-dom";
+import Header from "./components/Header";
+import "./App.css";
+import { history } from './helper/history'
+import Routes from "./components/Routes";
 
-const App = () => {
-    return <Router history={history}>
-        <Header />
-        <Switch>
-            <Route exact path="/" component={Login} />
-        </Switch>
-    </Router>
+function App(props) {
+    return (
+        <Router history={history}>
+            <Header />
+            <Routes {...props} />
+        </Router>
+    );
 }
 
-export default App
+export default App;
