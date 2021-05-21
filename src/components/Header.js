@@ -145,7 +145,7 @@ const NavMenu = styled.div`
   flex-flow: row nowrap;
   height: 100%;
   justify-content: flex-end;
-  margin: 0px;
+  margin: 0 auto 0 25px;
   padding: 0px;
   position: relative;
   margin-right: auto;
@@ -157,18 +157,19 @@ const NavMenu = styled.div`
     padding: 0 12px;
 
     img {
-      height: 20px;
-      min-width: 20px;
-      width: 20px;
+      height: 24px;
+      min-width: 24px;
+      width: 24px;
       z-index: auto;
+      margin-bottom: 4px;
     }
 
     span {
       color: rgb(249, 249, 249);
-      font-size: 13px;
+      font-size: 16px;
       letter-spacing: 1.42px;
       line-height: 1.08;
-      padding: 2px 0px;
+      padding: 2px 4px;
       white-space: nowrap;
       position: relative;
 
