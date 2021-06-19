@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { login } from '../actions/auth/auth-actions';
 
@@ -16,6 +16,12 @@ const SignIn = (props) => {
     }), shallowEqual)
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        if (auth.currentUser !== null) {
+            props.history.push('/home')
+        }
+    }, [auth])
+
     const handleChange = (e) => {
         let { name, value } = e.target;
         setForm({ ...form, [name]: value })
@@ -23,9 +29,7 @@ const SignIn = (props) => {
 
     const onSubmit = (e) => {
         e.preventDefault()
-        dispatch(login(form)).then(
-            props.history.push(`/home`)
-        )
+        dispatch(login(form))
     }
 
     return (

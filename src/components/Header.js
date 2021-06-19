@@ -1,8 +1,9 @@
 import styled from "styled-components";
-import { shallowEqual, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import isEmpty from "is-empty";
 import { handleLogout } from "../helper/GeneralHelpers";
+import { _logoutUser, _setCurrentUser } from "../actions/auth/auth-actions";
 
 const Header = (props) => {
   const { currentUser } = useSelector(state => ({
@@ -10,6 +11,7 @@ const Header = (props) => {
   }), shallowEqual)
 
   const history = useHistory();
+  const dispatch = useDispatch()
 
   return (
     <Nav>
@@ -50,7 +52,12 @@ const Header = (props) => {
           <SignOut>
             <UserImg src={currentUser ? currentUser.user && currentUser.user.image : <i className="fa fa-circle"></i>} />
             <DropDown>
-              <span onClick={() => handleLogout()}>Sign out</span>
+              <span onClick={() => {
+                handleLogout()
+                dispatch(_setCurrentUser(null))
+                dispatch(_logoutUser(null))
+                history.push(`/`)
+              }}>Sign out</span>
             </DropDown>
           </SignOut>
         </>

@@ -18,7 +18,11 @@ function _setCurrentUser(user) {
     return { type: 'SET_CURRENT_USER', user }
 }
 
-export function login(payload) {
+function _logoutUser(state) {
+    return { type: 'LOGOUT_SUCCESS', state }
+}
+
+const login = (payload) => {
     return dispatch => {
         dispatch(_processing(true));
         const options = {
@@ -29,20 +33,25 @@ export function login(payload) {
                 'Content-Type': 'application/json',
             }
         };
-        axios(options)
+        axios(options).then(res => {
+            dispatch(_processing(false));
+            dispatch(_success(res));
+            setAuthToken(res.data.token)
+            localStorage.setItem('token_type', res.data.token_type)
+            let user = jwt(res.data.token)
+            dispatch(_setCurrentUser(user))
+            return res
+        }).catch(error => {
+            dispatch(_error(error));
+            dispatch(_processing(false));
+            return error
+        });
 
-            .then(res => {
-                dispatch(_processing(false));
-                dispatch(_success(res));
-                setAuthToken(res.data.token)
-                localStorage.setItem('token_type', res.data.token_type)
-                let user = jwt(res.data.token)
-                dispatch(_setCurrentUser(user))
-            }).catch(error => {
-                dispatch(_error(error));
-                dispatch(_processing(false));
-            });
     }
 }
 
-export default login;
+export {
+    login,
+    _setCurrentUser,
+    _logoutUser
+};

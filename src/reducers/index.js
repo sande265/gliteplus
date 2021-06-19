@@ -6,10 +6,9 @@ const reducers = combineReducers({
 })
 
 const rootReducer = (state, action) => {
-    // if (action.type === authConstants.LOGOUT_SUCCESS) {
-    //     state = undefined
-    // }
-
+    if (action.type === 'LOGOUT_SUCCESS') {
+        state = null
+    }
     return reducers(state, action)
 }
 

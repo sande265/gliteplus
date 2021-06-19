@@ -2,9 +2,7 @@ import isEmpty from "is-empty"
 import jwt from "jwt-decode"
 
 export const handleLogout = () => {
-    localStorage.removeItem("_Htoken")
-    localStorage.removeItem("token_type")
-    localStorage.removeItem("_hldRdxStr")
+    localStorage.clear()
 }
 
 export const isAuthenticated = () => {
