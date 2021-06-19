@@ -1,65 +1,15 @@
-import { useEffect } from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { auth, provider } from "../firebase";
-import {
-  selectUserName,
-  selectUserPhoto,
-  setUserLoginDetails,
-  setSignOutState,
-} from "../features/user/userSlice";
+import isEmpty from "is-empty";
+import { handleLogout } from "../helper/GeneralHelpers";
 
 const Header = (props) => {
-  const dispatch = useDispatch();
+  const { currentUser } = useSelector(state => ({
+    currentUser: state.auth.currentUser
+  }), shallowEqual)
+
   const history = useHistory();
-  const userName = useSelector(selectUserName);
-  const userPhoto = useSelector(selectUserPhoto);
-
-  useEffect(() => {
-    auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        setUser(user);
-        if (history.location.pathname !== '/') {
-          history.push(history.location.pathname)
-        } else {
-          history.push("/home");
-        }
-      }
-    });
-  }, [userName]);
-
-
-  const handleAuth = () => {
-    if (!userName) {
-      auth
-        .signInWithPopup(provider)
-        .then((result) => {
-          setUser(result.user);
-        })
-        .catch((error) => {
-          alert(error.message);
-        });
-    } else if (userName) {
-      auth
-        .signOut()
-        .then(() => {
-          dispatch(setSignOutState());
-          history.push("/");
-        })
-        .catch((err) => alert(err.message));
-    }
-  };
-
-  const setUser = (user) => {
-    dispatch(
-      setUserLoginDetails({
-        name: user.displayName,
-        email: user.email,
-        photo: user.photoURL,
-      })
-    );
-  };
 
   return (
     <Nav>
@@ -67,8 +17,8 @@ const Header = (props) => {
         <img src="/images/logo.svg" alt="Disney+" />
       </Logo>
 
-      {!userName ? (
-        <Login onClick={handleAuth}>Login</Login>
+      {isEmpty(currentUser && currentUser.user) ? (
+        <Login onClick={() => history.push(`/login`)}>Login</Login>
       ) : (
         <>
           <NavMenu>
@@ -98,9 +48,9 @@ const Header = (props) => {
             </a>
           </NavMenu>
           <SignOut>
-            <UserImg src={userPhoto} alt={userName} />
+            <UserImg src={currentUser ? currentUser.user && currentUser.user.image : <i className="fa fa-circle"></i>} />
             <DropDown>
-              <span onClick={handleAuth}>Sign out</span>
+              <span onClick={() => handleLogout()}>Sign out</span>
             </DropDown>
           </SignOut>
         </>
@@ -200,9 +150,9 @@ const NavMenu = styled.div`
     }
   }
 
-  /* @media (max-width: 768px) {
+   @media (max-width: 768px) {
     display: none;
-  } */
+  }
 `;
 
 const Login = styled.a`
@@ -216,7 +166,7 @@ const Login = styled.a`
 
   &:hover {
     background-color: #f9f9f9;
-    color: #000;
+    color: #000 !important;
     border-color: transparent;
   }
 `;

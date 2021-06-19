@@ -1,12 +1,30 @@
 import React from 'react';
 import { Route, Switch } from 'react-router';
-import { Login, Home, Detail } from '.';
+import PrivateRoute from '../routes/PrivateRoute';
+import PublicRoute from '../routes/PublicRoute';
+import { Login, Home, Detail, NotFound, SignIn } from './'
 
-const Routes = () => {
+const Routes = (props) => {
     return <Switch>
-        <Route exact path="/" component={Login} />
-        <Route exact path="/home" component={Home} />
-        <Route exact path="/detail/:id" component={Detail} />
+
+        <Route exact path={["/", "/login"]}>
+            <PublicRoute restricted={true} exact path="/" component={Login} />
+            <PublicRoute restricted={true} exact path="/login" component={SignIn} />
+        </Route>
+
+        <Route path={["/home", "/detail"]}>
+            <PrivateRoute type="private" component={() =>
+                <>
+                    <Route path="/home" exact component={Home} />
+                    <Route path="/detail" exact component={Detail} />
+                    <Route path="/detail/:id" exact component={Detail} />
+                </>
+            } />
+        </Route>
+
+
+        <Route component={NotFound} />
+
     </Switch>
 }
 

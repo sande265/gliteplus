@@ -1,6 +1,7 @@
-import { BrowserRouter as Router } from "react-router-dom";
+import { Router } from "react-router-dom";
 import Header from "./components/Header";
-import "./App.css";
+import "./styles/App.css";
+import "./styles/custom.css"
 import { history } from './helper/history'
 import Routes from "./components/Routes";
 

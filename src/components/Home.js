@@ -8,12 +8,10 @@ import Viewers from "./Viewers";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import db from "../firebase";
-import { setMovies } from "../features/movie/movieSlice";
-import { selectUserName } from "../features/user/userSlice";
 
 const Home = (props) => {
   const dispatch = useDispatch();
-  const userName = useSelector(selectUserName);
+  // const userName = useSelector(selectUserName);
   let recommends = [];
   let newDisneys = [];
   let originals = [];
@@ -41,16 +39,16 @@ const Home = (props) => {
         }
       });
 
-      dispatch(
-        setMovies({
-          recommend: recommends,
-          newDisney: newDisneys,
-          original: originals,
-          trending: trending,
-        })
-      );
+      //   dispatch(
+      //     setMovies({
+      //       recommend: recommends,
+      //       newDisney: newDisneys,
+      //       original: originals,
+      //       trending: trending,
+      //     })
+      //   );
     });
-  }, [userName]);
+  }, []);
 
   return (
     <Container>
@@ -62,7 +60,7 @@ const Home = (props) => {
       <Trending />
     </Container>
   );
-};
+}
 
 const Container = styled.main`
   position: relative;
