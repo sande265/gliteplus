@@ -33,7 +33,7 @@ const login = (payload) => {
                 'Content-Type': 'application/json',
             }
         };
-        axios(options).then(res => {
+        let request = axios(options).then(res => {
             dispatch(_processing(false));
             dispatch(_success(res));
             setAuthToken(res.data.token)
@@ -46,7 +46,7 @@ const login = (payload) => {
             dispatch(_processing(false));
             return error
         });
-
+        return request
     }
 }
 

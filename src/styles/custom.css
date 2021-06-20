@@ -72,6 +72,22 @@
     animation: spin .8s linear infinite;
 }
 
+.dropdown-item:hover {
+    color: #090b13
+}
+
+.dropdown-item {
+    color: #fff
+}
+
+.slick-slide {
+    height: 200px;
+}
+
+.slick-slide img {
+    height: 200px;
+}
+
 @-webkit-keyframes spin {
     from {
         -webkit-transform: rotate(0deg);

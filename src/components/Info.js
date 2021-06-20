@@ -1,12 +1,21 @@
+import { useEffect } from "react";
 import styled from "styled-components";
+import { isAuthenticated } from "../helper/GeneralHelpers";
 
-const Login = (props) => {
+const Info = (props) => {
+
+  useEffect(() => {
+    if (isAuthenticated())
+      props.history.push(`/home`)
+
+  }, [])
+
   return (
     <Container>
       <Content>
         <CTA>
           <CTALogoOne src="/images/cta-logo-one.svg" alt="" />
-          <SignUp>GET ALL THERE</SignUp>
+          <SignUp onClick={() => props.history.push(`/login`)}>GET ALL THERE</SignUp>
           <Description>
             Get Premier Access to Raya and the Last Dragon for an additional fee
             with a Disney+ subscription. As of 03/26/21, the price of Disney+
@@ -72,6 +81,7 @@ const CTALogoOne = styled.img`
 
 const SignUp = styled.a`
   font-weight: bold;
+  cursor: pointer;
   color: #f9f9f9;
   background-color: #0063e5;
   margin-bottom: 12px;
@@ -103,4 +113,4 @@ const CTALogoTwo = styled.img`
   width: 100%;
 `;
 
-export default Login;
+export default Info;

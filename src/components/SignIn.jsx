@@ -1,5 +1,6 @@
+import isEmpty from 'is-empty';
 import React, { useState, useEffect } from 'react';
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
+import { connect, shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { login } from '../actions/auth/auth-actions';
 
 let initForm = {
@@ -10,26 +11,30 @@ let initForm = {
 
 const SignIn = (props) => {
     const [form, setForm] = useState(initForm)
+    const [errors, setError] = useState([])
 
     const { auth } = useSelector(state => ({
         auth: state.auth
     }), shallowEqual)
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        if (auth.currentUser !== null) {
-            props.history.push('/home')
-        }
-    }, [auth])
-
     const handleChange = (e) => {
         let { name, value } = e.target;
+        if (errors[name] !== '') {
+            errors[name] = ''
+        }
         setForm({ ...form, [name]: value })
     }
 
     const onSubmit = (e) => {
         e.preventDefault()
-        dispatch(login(form))
+        dispatch(login(form)).then(res => {
+            if (res.status === 200) {
+                props.history.push(`/home`)
+            } else if (res.response.status === 400) {
+                setError(res.response.data.message)
+            }
+        })
     }
 
     return (
@@ -43,18 +48,31 @@ const SignIn = (props) => {
                                     <div className="loginCard">
                                         <div className="form-group">
                                             <label htmlFor="email">Email address</label>
-                                            <input type="email" autoComplete="new-password" className="form-control" id="email" aria-describedby="emailHelp" name="email" onChange={handleChange} />
-                                            <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
+                                            <input type="email"
+                                                autoComplete="new-password"
+                                                className="form-control"
+                                                id="email"
+                                                aria-describedby="emailHelp"
+                                                name="email"
+                                                onChange={handleChange} />
+                                            {errors['email'] && <small className="text-danger">{errors['email']}</small>}
                                         </div>
                                         <div className="form-group">
                                             <label htmlFor="password">Password</label>
-                                            <input type="password" autoComplete="new-password" className="form-control" id="password" name="password" onChange={handleChange} />
+                                            <input type="password"
+                                                autoComplete="new-password"
+                                                className="form-control" id="password"
+                                                name="password"
+                                                onChange={handleChange} />
+                                            {errors['password'] && <small className="text-danger">{errors['password']}</small>}
                                         </div>
                                         <div className="form-group form-check">
-                                            <input type="checkbox" className="form-check-input" id="remember" />
+                                            <input type="checkbox"
+                                                className="form-check-input"
+                                                id="remember" />
                                             <label className="form-check-label" htmlFor="remember">Remember Me</label>
                                         </div>
-                                        <button type="submit" className="btn btn-primary">
+                                        <button type="submit" className="btn" style={{ backgroundColor: '#00C48D', color: '#fff' }}>
                                             {auth.processing ? <span className="spinner-border m-0 p-0"></span> : 'Submit'}
                                         </button>
                                     </div>
@@ -67,5 +85,6 @@ const SignIn = (props) => {
         </div>
     )
 }
+
 
 export default SignIn

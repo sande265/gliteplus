@@ -1,6 +1,7 @@
+import React from 'react';
 import styled from "styled-components";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { Link, NavLink, useHistory } from "react-router-dom";
 import isEmpty from "is-empty";
 import { handleLogout } from "../helper/GeneralHelpers";
 import { _logoutUser, _setCurrentUser } from "../actions/auth/auth-actions";
@@ -13,6 +14,55 @@ const Header = (props) => {
   const history = useHistory();
   const dispatch = useDispatch()
 
+  const logoutUser = () => {
+    handleLogout()
+    dispatch(_setCurrentUser(null))
+    dispatch(_logoutUser(null))
+    history.push(`/`)
+
+  }
+
+  let Links = [
+    {
+      to: '/home',
+      icon: '/images/home-icon.svg',
+      label: 'HOME',
+    },
+    {
+      to: '/search',
+      icon: '/images/search-icon.svg',
+      label: 'SEARCH',
+    },
+    {
+      to: '/watchlist',
+      icon: '/images/watchlist-icon.svg',
+      label: 'WATCHLIST',
+    },
+    {
+      to: '/originals',
+      icon: '/images/original-icon.svg',
+      label: 'ORIGINALS',
+    },
+    {
+      to: '/movies',
+      icon: '/images/movie-icon.svg',
+      label: 'MOVIES',
+    },
+    {
+      to: '/series',
+      icon: '/images/series-icon.svg',
+      label: 'SERIES',
+    },
+  ]
+
+  const LinkItem = React.memo((props) => {
+    const { link, idx } = props;
+    return <Link to={link.to} key={idx}>
+      <img src={link.icon} alt={link.label} />
+      <span>{link.label}</span>
+    </Link>
+  })
+
   return (
     <Nav>
       <Logo onClick={() => history.push("/home")}>
@@ -24,11 +74,12 @@ const Header = (props) => {
       ) : (
         <>
           <NavMenu>
-            <a href="/home">
+            {Links.map((item, idx) => <LinkItem link={item} idx={idx} key={idx} />)}
+            {/* <Link to="/home">
               <img src="/images/home-icon.svg" alt="HOME" />
               <span>HOME</span>
-            </a>
-            <a>
+            </Link> */}
+            {/* <a>
               <img src="/images/search-icon.svg" alt="SEARCH" />
               <span>SEARCH</span>
             </a>
@@ -47,22 +98,27 @@ const Header = (props) => {
             <a>
               <img src="/images/series-icon.svg" alt="SERIES" />
               <span>SERIES</span>
-            </a>
+            </a> */}
           </NavMenu>
           <SignOut>
+            {/* <DropDown>
+              <span>Profile</span>
+              <span onClick={logoutUser}>Sign out</span>
+            </DropDown> */}
             <UserImg src={currentUser ? currentUser.user && currentUser.user.image : <i className="fa fa-circle"></i>} />
-            <DropDown>
-              <span onClick={() => {
-                handleLogout()
-                dispatch(_setCurrentUser(null))
-                dispatch(_logoutUser(null))
-                history.push(`/`)
-              }}>Sign out</span>
-            </DropDown>
+
+            <ul className="navbar-nav ml-auto">
+              <DropDown>
+                <NavLink to="/me" className="dropdown-item">Profile</ NavLink>
+                <span onClick={logoutUser} className="dropdown-item">Logout</span>
+              </DropDown>
+
+            </ul>
           </SignOut>
         </>
-      )}
-    </Nav>
+      )
+      }
+    </Nav >
   );
 };
 
@@ -112,6 +168,7 @@ const NavMenu = styled.div`
     display: flex;
     align-items: center;
     padding: 0 12px;
+    text-decoration: none;
 
     img {
       height: 24px;
@@ -182,7 +239,7 @@ const UserImg = styled.img`
   height: 100%;
 `;
 
-const DropDown = styled.div`
+const DropDown = styled.li`
   position: absolute;
   top: 48px;
   right: 0px;
@@ -190,7 +247,6 @@ const DropDown = styled.div`
   border: 1px solid rgba(151, 151, 151, 0.34);
   border-radius: 4px;
   box-shadow: rgb(0 0 0 / 50%) 0px 0px 18px 0px;
-  padding: 10px;
   font-size: 14px;
   letter-spacing: 3px;
   width: 100px;
@@ -215,7 +271,7 @@ const SignOut = styled.div`
   &:hover {
     ${DropDown} {
       opacity: 1;
-      transition-duration: 1s;
+      transition-duration: 0.5s;
     }
   }
 `;

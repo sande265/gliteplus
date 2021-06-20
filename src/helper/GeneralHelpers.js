@@ -10,6 +10,7 @@ export const isAuthenticated = () => {
     if (!token && isEmpty(token))
         return false
     else if (jwt(token).exp < Date.now() / 1000) {
+        handleLogout()
         return false
     }
     return true
