@@ -1,9 +1,11 @@
 import Info from './Info';
 import Header from './Header'
-import Home from './Home';
+import Home from './pages/home/Home';
 import Detail from './Detail';
-import SignIn from './SignIn';
+import SignIn from './pages/login/SignIn';
 import NotFound from './NotFound';
+import ViewUser from './pages/user/ViewUser';
+import Player from './pages/player/Player'
 
 export {
     Info,
@@ -11,5 +13,7 @@ export {
     Home,
     Detail,
     SignIn,
-    NotFound
+    NotFound,
+    ViewUser,
+    Player,
 }

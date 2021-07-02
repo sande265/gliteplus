@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from "styled-components";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useHistory } from "react-router-dom";
 import isEmpty from "is-empty";
-import { handleLogout } from "../helper/GeneralHelpers";
+import { handleLogout, isAuthenticated } from "../helper/GeneralHelpers";
 import { _logoutUser, _setCurrentUser } from "../actions/auth/auth-actions";
 
 const Header = (props) => {
@@ -14,12 +14,16 @@ const Header = (props) => {
   const history = useHistory();
   const dispatch = useDispatch()
 
+  useEffect(() => {
+    const result = isAuthenticated()
+    if (result === false) handleLogout()
+  }, [])
+
   const logoutUser = () => {
     handleLogout()
     dispatch(_setCurrentUser(null))
     dispatch(_logoutUser(null))
     history.push(`/`)
-
   }
 
   let Links = [
@@ -75,44 +79,14 @@ const Header = (props) => {
         <>
           <NavMenu>
             {Links.map((item, idx) => <LinkItem link={item} idx={idx} key={idx} />)}
-            {/* <Link to="/home">
-              <img src="/images/home-icon.svg" alt="HOME" />
-              <span>HOME</span>
-            </Link> */}
-            {/* <a>
-              <img src="/images/search-icon.svg" alt="SEARCH" />
-              <span>SEARCH</span>
-            </a>
-            <a>
-              <img src="/images/watchlist-icon.svg" alt="WATCHLIST" />
-              <span>WATCHLIST</span>
-            </a>
-            <a>
-              <img src="/images/original-icon.svg" alt="ORIGINALS" />
-              <span>ORIGINALS</span>
-            </a>
-            <a>
-              <img src="/images/movie-icon.svg" alt="MOVIES" />
-              <span>MOVIES</span>
-            </a>
-            <a>
-              <img src="/images/series-icon.svg" alt="SERIES" />
-              <span>SERIES</span>
-            </a> */}
           </NavMenu>
           <SignOut>
-            {/* <DropDown>
-              <span>Profile</span>
-              <span onClick={logoutUser}>Sign out</span>
-            </DropDown> */}
             <UserImg src={currentUser ? currentUser.user && currentUser.user.image : <i className="fa fa-circle"></i>} />
-
             <ul className="navbar-nav ml-auto">
               <DropDown>
-                <NavLink to="/me" className="dropdown-item">Profile</ NavLink>
+                <span onClick={() => history.push(`/user/${currentUser.user.username}`)} className="dropdown-item">Profile</span>
                 <span onClick={logoutUser} className="dropdown-item">Logout</span>
               </DropDown>
-
             </ul>
           </SignOut>
         </>

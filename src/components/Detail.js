@@ -1,36 +1,37 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import db from "../firebase";
+import getMovie from "../actions/movies/get_movie";
 
 const Detail = (props) => {
-  const { id } = useParams();
+  const { id } = props.match.params;
   const [detailData, setDetailData] = useState({});
 
+  const { movie } = useSelector(state => ({
+    movie: state.movie
+  }), shallowEqual)
+  const dispatch = useDispatch()
+
   useEffect(() => {
-    db.collection("movies")
-      .doc(id)
-      .get()
-      .then((doc) => {
-        if (doc.exists) {
-          setDetailData(doc.data());
-        } else {
-          console.log("no such document in firebase 🔥");
-        }
-      })
-      .catch((error) => {
-        console.log("Error getting document:", error);
-      });
-  }, [id]);
+    dispatch(getMovie(id))
+  }, [])
+
+  useEffect(() => {
+    let { success, error } = movie;
+    if (success && success.data) {
+      setDetailData(success.data.data[0])
+    } else if (error && error.response) {
+    }
+  }, [movie])
 
   return (
     <Container>
       <Background>
-        <img alt={detailData.title} src={detailData.backgroundImg} />
+        <img alt={detailData.name} src={detailData.poster_img} />
       </Background>
 
       <ImageTitle>
-        <img alt={detailData.title} src={detailData.titleImg} />
+        <img alt={detailData.name} src={detailData.title_img} />
       </ImageTitle>
       <ContentMeta>
         <Controls>
@@ -38,7 +39,7 @@ const Detail = (props) => {
             <img src="/images/play-icon-black.png" alt="" />
             <span>Play</span>
           </Player>
-          <Trailer>
+          <Trailer onClick={() => props.history.push(`/detail/${detailData.slug}/play`)}>
             <img src="/images/play-icon-white.png" alt="" />
             <span>Trailer</span>
           </Trailer>
@@ -61,7 +62,7 @@ const Detail = (props) => {
 
 const Container = styled.div`
   position: relative;
-  min-height: calc(100vh-250px);
+  min-height: calc(100% - 250px);
   overflow-x: hidden;
   display: block;
   top: 72px;
@@ -77,11 +78,14 @@ const Background = styled.div`
   z-index: -1;
 
   img {
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: auto;
 
     @media (max-width: 768px) {
-      width: initial;
+      padding-top: 68px;
+      background-size: cover;
+      height: 320px;
+      width: 100%;
     }
   }
 `;

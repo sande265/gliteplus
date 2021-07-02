@@ -2,6 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 import { _logoutUser } from '../actions/auth/auth-actions';
+import { Header } from '../components';
 import { isAuthenticated } from "../helper/GeneralHelpers";
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
@@ -12,7 +13,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         // Otherwise, redirect the user to /signin page
         <Route {...rest} render={props => (
             isAuthenticated() ?
-                <Component {...props} />
+                <React.Fragment><Header /><Component {...props} /></React.Fragment>
                 : dispatch(_logoutUser(null)) && <Redirect to="/" />
         )} />
     );

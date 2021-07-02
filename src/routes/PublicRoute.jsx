@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
+import { Header } from "../components";
 import { isAuthenticated } from "../helper/GeneralHelpers";
 
 const PublicRoute = ({ component: Component, restricted, ...rest }) => {
@@ -9,7 +10,7 @@ const PublicRoute = ({ component: Component, restricted, ...rest }) => {
         <Route {...rest} render={props => (
             isAuthenticated() && restricted ?
                 <Redirect to="/" />
-                : <Component {...props} />
+                : <React.Fragment><Header /><Component {...props} /></React.Fragment>
         )} />
     );
 };

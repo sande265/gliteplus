@@ -10,6 +10,11 @@ export const isTokenExpired = () => {
     return false
 }
 
+export const getToken = () => {
+    let token = localStorage.getItem('_Htoken')
+    return token
+}
+
 
 export const setAuthToken = token => {
     if (token) {
