@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import styled from "styled-components";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { Link, NavLink, useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import isEmpty from "is-empty";
 import { handleLogout, isAuthenticated } from "../helper/GeneralHelpers";
 import { _logoutUser, _setCurrentUser } from "../actions/auth/auth-actions";
 
-const Header = (props) => {
+const Header = () => {
   const { currentUser } = useSelector(state => ({
     currentUser: state.auth.currentUser
   }), shallowEqual)
@@ -23,6 +23,7 @@ const Header = (props) => {
     handleLogout()
     dispatch(_setCurrentUser(null))
     dispatch(_logoutUser(null))
+    currentUser.user = null
     history.push(`/`)
   }
 
@@ -67,6 +68,8 @@ const Header = (props) => {
     </Link>
   })
 
+  const currentSelection = history.location.pathname.split(`/`)[1];
+
   return (
     <Nav>
       <Logo onClick={() => history.push("/home")}>
@@ -84,7 +87,9 @@ const Header = (props) => {
             <UserImg src={currentUser ? currentUser.user && currentUser.user.image : <i className="fa fa-circle"></i>} />
             <ul className="navbar-nav ml-auto">
               <DropDown>
-                <span onClick={() => history.push(`/user/${currentUser.user.username}`)} className="dropdown-item">Profile</span>
+                <span onClick={() => history.push(`/user/${currentUser.user.username}`)}
+                  className={`dropdown-item ${currentSelection === 'user' ? 'active' : ''}`}>Profile</span>
+                {currentUser.user && currentUser.user.role === 'admin' && <span className="dropdown-item">Admin</span>}
                 <span onClick={logoutUser} className="dropdown-item">Logout</span>
               </DropDown>
             </ul>
@@ -220,11 +225,11 @@ const DropDown = styled.li`
   background: rgb(19, 19, 19);
   border: 1px solid rgba(151, 151, 151, 0.34);
   border-radius: 4px;
-  box-shadow: rgb(0 0 0 / 50%) 0px 0px 18px 0px;
+  box-shadow: rgb(0 0 0 / 50%) 0px 0px 0px 0.6px;
   font-size: 14px;
-  letter-spacing: 3px;
+  letter-spacing: 2.5px;
   width: 100px;
-  opacity: 0;
+  display: none
 `;
 
 const SignOut = styled.div`
@@ -244,7 +249,7 @@ const SignOut = styled.div`
 
   &:hover {
     ${DropDown} {
-      opacity: 1;
+      display: block;
       transition-duration: 0.5s;
     }
   }

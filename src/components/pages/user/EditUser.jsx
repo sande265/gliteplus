@@ -19,6 +19,7 @@ const EditUser = (props) => {
         email: '',
         username: ''
     })
+    const [image, setImage] = useState()
 
     useEffect(() => {
         dispatch(getUser(id))
@@ -47,6 +48,13 @@ const EditUser = (props) => {
         setFormData({ ...form, [name]: value })
     }
 
+    const handleImageChange = (e) => {
+        let files = e.target.files[0]
+        console.log("files",);
+    }
+
+    console.log("image", image);
+
     const handleSubmit = () => {
         dispatch(editUser(id, form)).then(res => {
             if (res.status === 400) console.log("error", res.data.message);
@@ -74,7 +82,15 @@ const EditUser = (props) => {
                             {user.processing ? <div className=""><LoadingSpinner /></div> : <React.Fragment>
                                 <div className="row">
                                     <div className="col-12">
-                                        <img className="profile-image my-2" src={form.image} alt="User" />
+                                        <div className="profileWrapper">
+                                            <img className="profile-image my-2" src={form.image} alt="User" />
+                                            <button className="btn">
+                                                <span htmlFor="image" className="ri-pencil-fill"></span>
+                                                <label htmlFor="image">
+                                                    <input type="file" onChange={handleImageChange} id="image" style={{ display: 'none' }} name="image" />
+                                                    Edit Image</label>
+                                            </button>
+                                        </div>
                                     </div>
                                     <div className="col-lg-6 col-sm-12 my-1">
                                         <label htmlFor="first_name">First Name</label>

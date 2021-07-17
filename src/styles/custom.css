@@ -83,7 +83,7 @@
 
 .boxWrapper {
     margin-top: 70px;
-    padding: 15px;
+    /* padding: 15px; */
     padding-bottom: 0;
     padding-top: 13px;
 }
@@ -396,6 +396,57 @@ table {
     color: #5cb85b !important;
 }
 
+.dropdown-item.active,
+.dropdown-item:active {
+    color: #fff;
+    text-decoration: none;
+    background-color: #5cb85b;
+}
+
+.profileWrapper button {
+    width: calc(3% - 5px);
+    color: #fff;
+    border-radius: 50%;
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    top: 80%;
+    left: 53%;
+    background-color: #5cb85b;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    position: absolute;
+}
+
+.profileWrapper button label {
+    margin: 0px;
+    max-width: 0;
+    transition: max-width 0.3s;
+    display: inline-block;
+    vertical-align: top;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.profileWrapper button:hover label {
+    max-width: 7rem;
+    border-radius: 4px;
+}
+
+.profileWrapper button:hover {
+    left: 57%;
+    width: 7rem;
+    border-radius: 4px;
+    color: #fff;
+    background-color: #5cb85b;
+}
+
+.profileWrapper button:active {
+    color: #fff;
+    background-color: #5cb85b;
+}
+
+
 @-webkit-keyframes spin {
     from {
         -webkit-transform: rotate(0deg);
@@ -418,7 +469,20 @@ table {
 
 @media (max-width: 574px) {
     .loginCard {
-        margin-left: 24px;
+        margin-left: 24px !important;
+    }
+
+    .profile-image {
+        width: 90px !important;
+    }
+
+    .profileWrapper button {
+        width: 8% !important;
+        left: 60% !important;
+    }
+
+    .profileWrapper button:hover {
+        left: 70% !important;
     }
 
 }
@@ -429,7 +493,7 @@ table {
     }
 
     .profile-image {
-        width: 15%;
+        width: 25%;
     }
 
     .playerWrapper {
@@ -440,5 +504,14 @@ table {
         min-height: 80vh;
         width: 90vw;
         left: 5%;
+    }
+
+    .profileWrapper button {
+        width: 4%;
+        left: 55%;
+    }
+
+    .profileWrapper button:hover {
+        left: 60%;
     }
 }
