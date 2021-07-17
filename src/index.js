@@ -11,3 +11,5 @@ ReactDOM.render(
   </Provider>,
   document.getElementById("root")
 );
+
+console.log("port", process.env.REACT_APP_API_URL);
