@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import styled from "styled-components";
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import {shallowEqual, useDispatch, useSelector} from "react-redux";
+import {Link, useHistory} from "react-router-dom";
 import isEmpty from "is-empty";
-import { handleLogout, isAuthenticated } from "../helper/GeneralHelpers";
-import { _logoutUser, _setCurrentUser } from "../actions/auth/auth-actions";
+import {handleLogout, isAuthenticated} from "../helper/GeneralHelpers";
+import {_logoutUser, _setCurrentUser} from "../actions/auth/auth-actions";
 
 const Header = () => {
-  const { currentUser } = useSelector(state => ({
+  const {currentUser} = useSelector(state => ({
     currentUser: state.auth.currentUser
   }), shallowEqual)
 
@@ -61,7 +61,7 @@ const Header = () => {
   ]
 
   const LinkItem = React.memo((props) => {
-    const { link, idx } = props;
+    const {link, idx} = props;
     return <Link to={link.to} key={idx}>
       <img src={link.icon} alt={link.label} />
       <span>{link.label}</span>
@@ -69,6 +69,9 @@ const Header = () => {
   })
 
   const currentSelection = history.location.pathname.split(`/`)[1];
+
+
+  console.log("port", process.env.CI);
 
   return (
     <Nav>

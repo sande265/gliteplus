@@ -19,9 +19,9 @@ jobs:
           node-version: 14.x
       - name: Install dependencies
         run: npm install
+      - name: Build Development App
         env:
           CI: false
-      - name: Build Development App
         run: npm run build
       # Share artifact inside workflow
       - name: Share artifact inside workflow
