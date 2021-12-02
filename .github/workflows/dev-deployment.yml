@@ -22,7 +22,7 @@ jobs:
         env:
           CI: false
       - name: Build Development App
-        run: npm run build:dev
+        run: npm run build
       # Share artifact inside workflow
       - name: Share artifact inside workflow
         uses: actions/upload-artifact@v1
