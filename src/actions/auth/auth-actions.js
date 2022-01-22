@@ -36,9 +36,9 @@ const login = (payload) => {
         let request = axios(options).then(res => {
             dispatch(_processing(false));
             dispatch(_success(res));
-            setAuthToken(res.data.token)
+            setAuthToken(res.data.access_token)
             localStorage.setItem('token_type', res.data.token_type)
-            let user = jwt(res.data.token)
+            let user = jwt(res.data.access_token)
             dispatch(_setCurrentUser(user))
             return res
         }).catch(error => {
