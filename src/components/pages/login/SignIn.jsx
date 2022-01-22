@@ -20,7 +20,7 @@ const SignIn = (props) => {
     useEffect(() => {
         let { success, error } = props.auth;
         if (success) {
-            props.history.push(`/home`)
+            props.history.push('/home')
         }
         if (error) {
             if (error.response) {
