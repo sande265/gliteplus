@@ -17,7 +17,7 @@ const editUser = (id, payload) => {
     return dispatch => {
         dispatch(_processing(true));
         const options = {
-            url: process.env.REACT_APP_API_URL + '/users/' + id,
+            url: process.env.REACT_APP_API_URL + '/v1/users/' + id,
             method: 'patch',
             data: payload,
             headers: {
