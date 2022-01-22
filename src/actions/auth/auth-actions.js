@@ -26,7 +26,7 @@ const login = (payload) => {
     return dispatch => {
         dispatch(_processing(true));
         const options = {
-            url: process.env.REACT_APP_API_URL + '/signin',
+            url: process.env.REACT_APP_API_URL + '/login',
             method: 'post',
             data: payload,
             headers: {

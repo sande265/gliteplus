@@ -24,8 +24,8 @@ const SignIn = (props) => {
         }
         if (error) {
             if (error.response) {
-                console.log("message", error.response.data.message);
-                setError(error.response.data.message)
+                console.log("message", error.response.data);
+                setError(error.response.data)
             }
         }
         // return
